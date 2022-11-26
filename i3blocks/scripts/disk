@@ -1,0 +1,2 @@
+#!/bin/bash
+df --output=pcent / | tail -n1 |awk '{print $1}'

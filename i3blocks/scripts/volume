@@ -1,0 +1,13 @@
+#!/bin/bash
+
+VOL=$(amixer -D pulse sget Master| awk '/\[(.*)\]/{if($6 ~/on/) {c++;sum+=substr($5, 2, length($5)-2)}} END {if(c>0) {print sum/c}}')
+
+if [ -z "$VOL" ];then
+  echo "mute"
+else
+  if [ $VOL -lt "50" ]; then
+    echo "$VOL%"
+  else 
+    echo "$VOL%"
+  fi
+fi
