@@ -1,0 +1,218 @@
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+
+;; Place your private configuration here! Remember, you do not need to run 'doom
+;; sync' after modifying this file!
+
+
+;; Some functionality uses this to identify you, e.g. GPG configuration, email
+;; clients, file templates and snippets.
+(setq user-full-name "Sig Lange"
+      user-mail-address "sig.lange@gmail.com")
+
+;; save current cursor position in files
+(save-place-mode 1)
+
+;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
+;; are the three important ones:
+;;
+;; + `doom-font'
+;; + `doom-variable-pitch-font'
+;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
+;;   presentations or streaming.
+;;
+;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+;; font string. You generally only need these two:
+;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+
+;; There are two ways to load a theme. Both assume the theme is installed and
+;; available. You can either set `doom-theme' or manually load a theme with the
+;; `load-theme' function.
+;; This is the default: doom-one
+;; (setq doom-theme 'doom-one)
+(setq doom-theme 'doom-zenburn)
+;; (setq doom-theme 'doom-spacegrey)
+;; notes
+;; - zenburn seems easy to read on my laptop, in the morning
+
+;; (ef-themes-select 'ef-bio)
+
+;; This determines the style of line numbers in effect. If set to `nil', line
+;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type t)
+
+;; (global-set-key [f5] 'hl-line-mode)
+(remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
+
+
+;; Here are some additional functions/macros that could help you configure Doom:
+;;
+;; - `load!' for loading external *.el files relative to this one
+;; - `use-package!' for configuring packages
+;; - `after!' for running code after a package has loaded
+;; - `add-load-path!' for adding directories to the `load-path', relative to
+;;   this file. Emacs searches the `load-path' when you load packages with
+;;   `require' or `use-package'.
+;; - `map!' for binding new keys
+;;
+;; To get information about any of these functions/macros, move the cursor over
+;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
+;; This will open documentation for it, including demos of how they are used.
+;;
+;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
+;; they are implemented.
+
+
+
+(setq projectile-use-native-indexing t)
+
+(setq lsp-enable-file-watchers nil)
+
+(setq lsp-gopls-codelens nil)
+
+;;(setq doom-localleader-key ",")
+
+;; If you use `org' and don't want your org files in the default location below,
+;; change `org-directory'. It must be set before org loads!
+
+;;(after! go-mode
+;;        (setq gofmt-command "goimports")
+;;)
+
+;;(add-hook 'go-mode-hook 'lsp-deferred)
+
+
+(after! go-mode
+  (setq gofmt-command "goimports")
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (add-hook 'after-save-hook 'gofmt nil 'make-it-local))))
+
+(after! go-mode
+  (set-lookup-handlers! 'go-mode
+    :definition #'godef-jump
+    :references #'go-guru-referrers
+    :documentation #'godoc-at-point))
+
+;;(defun my-go-mode-hook ()
+;;  ; Use goimports instead of go-fmt
+;;  (setq gofmt-command "goimports")
+;;  ; Call Gofmt before saving
+;;  (add-hook 'before-save-hook 'gofmt-before-save)
+;;  ; Customize compile command to run go build
+;;  (if (not (string-match "go" compile-command))
+;;      (set (make-local-variable 'compile-command)
+;;           "go build -v && go test -v && go vet"))
+;;  ; Godef jump key binding
+;;  (local-set-key (kbd "M-.") 'godef-jump)
+;;  (local-set-key (kbd "M-*") 'pop-tag-mark)
+;;)
+;;(add-hook 'go-mode-hook 'my-go-mode-hook)
+
+;; org-capture
+;; (setq org-default-notes-file (concat org-directory "/notes.org"))
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+
+(setq org-directory "~/org")
+(after! org
+  (setq org-log-done t))
+(after! org
+  (setq org-agenda-files '("~/org/")))
+
+
+;; snippets
+(yas-global-mode 1)
+(add-to-list 'load-path
+              "~/.emacs.d/plugins/yasnippet")
+
+(after! treemacs
+  (treemacs-follow-mode 1))
+
+;; rust
+ ;; (after! lsp-rust
+ ;;   (setq lsp-rust-analyzer-display-chaining-hints t
+ ;;         lsp-rust-analyzer-display-parameter-hints t
+ ;;         lsp-rust-analyzer-completion-add-call-argument-snippets t
+ ;;         lsp-rust-analyzer-call-info-full t
+ ;;         lsp-rust-analyzer-inlay-chain-format " : %s"
+ ;;         lsp-rust-analyzer-server-display-inlay-hints t
+ ;;         lsp-rust-analyzer-server-display-inlay-hints t))
+(after! lsp-rust
+  (setq lsp-rust-analyzer-display-chaining-hints t
+        lsp-rust-analyzer-display-parameter-hints t
+        lsp-rust-analyzer-completion-add-call-argument-snippets t
+        lsp-rust-analyzer-call-info-full t
+        lsp-rust-analyzer-inlay-chain-format " : %s"
+        lsp-rust-analyzer-max-inlay-hint-length 40
+        lsp-rust-analyzer-server-display-inlay-hints t)
+  (map! :localleader :map rustic-mode-map "tl" 'rustic-cargo-test-rerun)
+  (map! :localleader :map rustic-mode-map "c" 'rustic-cargo-check)
+)
+;; (after! lsp-rust
+;;        (setq racer-rust-src-path
+;;        (concat (string-trim
+;;                (shell-command-to-string "rustc --print sysroot"))
+;;                "/lib/rustlib/src/rust/src")))
+
+;; (after! rustic
+;;   (setq rustic-format-on-save t)
+;;   (setq rustic-lsp-server 'rust-analyzer))
+
+(after! lsp-rust
+  (setq lsp-rust-server 'rust-analyzer))
+
+
+;;(server-start)
+
+(setq confirm-kill-emacs nil)
+
+(pcre-mode +1)
+
+; xorg clipboard handling
+(setq x-select-enable-primary t)
+(setq x-select-enable-clipboard t)
+
+;(setq org-roam-directory "~/Sync/roam")
+
+(setq deft-directory "~/Sync/roam"
+      deft-extensions '("org" "txt")
+      deft-recurse t)
+
+(defun save-all () (interactive) (save-some-buffers t))
+(global-set-key (kbd "C-S") 'save-all)
+
+(require 'restclient)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((restclient . t)))
+
+;; disable automatically adding various pairs
+(remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
+
+;; recoll
+(use-package! org-recoll
+  :after org)
+
+(global-set-key (kbd "C-c g") 'org-recoll-search)
+(global-set-key (kbd "C-c u") 'org-recoll-update-index)
+
+(use-package ibuffer-vc
+  :ensure t
+  :init
+  :config
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (ibuffer-vc-set-filter-groups-by-vc-root)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic)))))
+
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (when (file-remote-p dired-directory)
+              (setq-local dired-actual-switches "-alhB"))))
+
+
+;; (setq +notmuch-sync-backend 'mbsync)
