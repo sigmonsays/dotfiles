@@ -1,3 +1,27 @@
+* index :TOC:
+- [[#notes][Notes]]
+  - [[#heading][Heading]]
+- [[#identity][Identity]]
+- [[#todo][TODO]]
+- [[#misc][Misc]]
+  - [[#save-file-position-in-files][Save file position in files]]
+  - [[#dont-ask-to-exit][Dont ask to exit]]
+- [[#theme][Theme]]
+- [[#projectile][Projectile]]
+- [[#golang][Golang]]
+- [[#rust][Rust]]
+- [[#org-mode][Org Mode]]
+- [[#xorg-clipboard-handling][xorg clipboard handling]]
+- [[#ibuffer-grouping-by-revision-control][ibuffer grouping by revision control]]
+  - [[#deft-disabled][Deft (Disabled)]]
+  - [[#dired][Dired]]
+- [[#unsorted][Unsorted]]
+  - [[#disabled-block-example][Disabled block Example]]
+  - [[#fonts][Fonts]]
+  - [[#snippets---yasnippet][Snippets - yasnippet]]
+  - [[#rest-client][REST Client]]
+  - [[#recoll---search-tool][Recoll - Search tool]]
+
 * Notes
 - add ':tangle no' to a begin_src block to disable
 - literate config docs https://github.com/doomemacs/doomemacs/blob/master/modules/config/literate/README.org
