@@ -1,0 +1,11 @@
+
+function _bashrc_d_scripts {
+ ls -1 $HOME/.bashrc.d/*.sh | sort
+}
+
+function is_linux {
+         echo "$MACHTYPE" | grep -q linux
+}
+function is_macos {
+         echo "$MACHTYPE" | grep -q apple-darwin
+}
