@@ -1,0 +1,25 @@
+#
+# https://wiki.archlinux.org/title/Readline#Editing_mode
+#
+Control-o: "> output.txt"
+
+Control-k: kill-whole-line
+
+#set show-mode-in-prompt on
+
+# Make CTL+ALT+L append less
+"\e\C-l": "\C-e | less\C-m"
+
+"\ew": "\C-e # macro"
+
+
+ #ALT+S: Prefix line with sudo
+"\es": "\C-asudo \C-e"
+
+# Bind Ctl+left and Ctl-right arrow keys
+"\e[1;5D": backward-word
+"\e[1;5C": forward-word
+
+set expand-tilde on
+set colored-stats on
+set colored-completion-prefix on
