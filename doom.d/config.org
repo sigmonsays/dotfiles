@@ -2,7 +2,7 @@
 - [[#notes][Notes]]
   - [[#heading][Heading]]
 - [[#identity][Identity]]
-- [[#todo][TODO]]
+- [[#random-bits][Random Bits]]
 - [[#misc][Misc]]
   - [[#save-file-position-in-files][Save file position in files]]
   - [[#dont-ask-to-exit][Dont ask to exit]]
@@ -13,8 +13,8 @@
 - [[#org-mode][Org Mode]]
 - [[#xorg-clipboard-handling][xorg clipboard handling]]
 - [[#ibuffer-grouping-by-revision-control][ibuffer grouping by revision control]]
-  - [[#deft-disabled][Deft (Disabled)]]
-  - [[#dired][Dired]]
+- [[#deft-disabled][Deft (Disabled)]]
+- [[#dired][Dired]]
 - [[#unsorted][Unsorted]]
   - [[#disabled-block-example][Disabled block Example]]
   - [[#fonts][Fonts]]
@@ -39,7 +39,7 @@
       user-mail-address "sig.lange@gmail.com")
 #+end_src
 
-* TODO
+* Random Bits
 #+begin_src emacs-lisp
 
 ;; blinking cursor
@@ -192,14 +192,14 @@
                 (ibuffer-do-sort-by-alphabetic)))))
 #+end_src
 
-** Deft (Disabled)
+* Deft (Disabled)
 #+begin_src emacs-lisp :tangle no
 (setq deft-directory "~/Sync/roam"
       deft-extensions '("org" "txt")
       deft-recurse t)
 #+end_src
 
-** Dired
+* Dired
 #+begin_src emacs-lisp :tangle no
 (add-hook 'dired-mode-hook
           (lambda ()
@@ -267,4 +267,3 @@
 (global-set-key (kbd "C-c g") 'org-recoll-search)
 (global-set-key (kbd "C-c u") 'org-recoll-update-index)
 #+end_src
-
